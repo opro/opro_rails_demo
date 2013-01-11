@@ -1,0 +1,49 @@
+<h2>Step 3: Get Access Token</h2>
+
+<p>
+If everything worked correctly you should see <code>code=</code> in the addressbar above, this means the user (you) authorized the application, and we can now take this code and exchange it for an auth token.
+</p>
+
+
+<%- if params[:code].blank? -%>
+  <p>There was a problem with the request, please try again</p>
+<%- else -%>
+  <p>The request was successful, your code is <code><%= params[:code] %></code></p>
+
+  We need to exchange this for an actual auth token by sending a request to this beastly url:
+  <pre><code><%= my_oauth_url = oauth_token_path(:client_id => @client_app.client_id, :client_secret => @client_app.secret, :code => params[:code], :format => :json) %></code></pre>
+
+  <%= button_to 'Get Access Token Now', my_oauth_url, :remote => true, :id => 'accessTokenButton', :class => 'btn btn-primary'%>
+Note: it only works on the first request, if you forget your access token you need to go <%= link_to "back", previous_wizard_path %> to re-authorize your application.
+
+  <div class='spinner hide'><%= image_tag 'spinner.gif' %></div>
+
+  <div class='result hide'>
+    <h4>Result:</4>
+    <pre>Access Token:<code id='codeResult'></code></pre>
+    <p>
+      If you got an access token, you should be able to use it to make an authorized request. <%= link_to 'Use your access token now', oauth_walkthrough_path('use_access_token', :client_id => @client_app.client_id), :class => 'btn btn-primary' %>
+    </p>
+  </div>
+
+<%- end -%>
+
+<hr />
+<%= link_to 'Next', next_wizard_path %>
+
+<%= content_for(:js) do %>
+  <script type='text/javascript'>
+  $(document).ready(function(){
+    $('.button_to').bind("ajax:beforeSend", function(){
+      $('.result').hide();
+      $('.spinner').show();
+      $(this).hide();
+    }).bind('ajax:success', function(evt, data, status, xhr){
+      $('.result').show();
+      $('.spinner').hide();
+      if ( data.length === 0 ) { data = {'access_token': 'not found'} };
+      $('#codeResult').html(data.access_token);
+    });
+  });
+  </script>
+<%- end -%>

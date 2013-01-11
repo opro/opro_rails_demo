@@ -1,0 +1,36 @@
+<h2>Step 2: Authorize your App</h2>
+
+
+
+<% if @client_apps.blank? %>
+  <p>
+    Looks like you don't have any apps yet. Click to <%= link_to 'Create Client Application', new_oauth_client_app_path, :class => 'btn btn-primary' %> and come back to this page when you're done.
+  </p>
+
+
+<% else %>
+  <p>
+    Now that you've got an app, you'll need to give it access like a regular user would need to.
+  </p>
+
+  <p>Click on the app below you would like to authorize, it will take you to <code><%= oauth_authorize_path %></code> with the propper client_id and redirect_uri:</p>
+
+  <ul>
+  <% @client_apps.each do |app| %>
+    <li style='padding-bottom:10px'>
+      Authorize:
+      <%
+      params = {client_id:    app.client_id,
+                redirect_uri: oauth_walkthrough_path(:get_access_token, client_id: app.client_id)
+               }
+      app_authorize_url = oauth_new_path(params) %>
+      <%= link_to "#{app.name}", app_authorize_url, :class => 'btn btn-primary' %>
+    </li>
+  <% end %>
+</ul>
+<% end %>
+
+<hr />
+<p>
+  <%= link_to 'Next', next_wizard_path %>
+</p>

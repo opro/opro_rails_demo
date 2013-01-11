@@ -1,0 +1,42 @@
+<h2>Last Step: Use your Access Token</h2>
+
+<p>
+  Congrats, you've got an access token. Now its time to put it to use. By default Opro comes with a built in end point that is opened for authorization. <code><%= oauth_test_path(:test_me) %></code>.
+</p>
+
+<p>
+Copy in the curl commands below into your terminal, or use <a href='http://hurl.it'>Hurl.it</a>
+</p>
+
+<pre><code>curl <%= oauth_test_url(:test_me, :access_token => @token, :format => :json) %></code></pre>
+
+
+<h2>Extra Credit</h2>
+
+<p>Since you're authenticated you can update your own profile from curl, send an authenticated <code>PUT</code> request to <code><%= user_path(current_user) %></code></p>
+
+<pre><code>curl -d user[twitter]=schneems -X PUT <%= user_url(:me, :access_token => @token, :format => 'json' ) %>
+</code></pre>
+
+You can change twitter, email, zip, and phone_number, then you can curl your user number and see if your values changed
+
+<br /><br />
+<pre><code>curl <%= user_url(:me, :access_token => @token, :format => :json) %></code></pre>
+
+<h3>Use Access Token in Header</h3>
+
+<p>You can also use a header to pass the oauth token, if you prefer.</p>
+
+<pre><code> curl -H "Authorization: token <%= @token %>" "<%= oauth_test_url(:test_me, :format => :json) %>"</code></pre>
+
+
+<hr />
+
+<h2>Fin.</h2>
+<p>
+To get started turning your Rails app into an OAuth Provider view the source on github: <%= link_to 'Opro on Github', 'http://github.com/schneems/opro' %>
+</p>
+<ul>
+  <li><%= link_to 'Code', 'http://github.com/schneems/opro' %></li>
+  <li><%= link_to 'Home', root_path %></li>
+</ul>
