@@ -9,7 +9,7 @@ gem 'pg'
 
 gem 'unicorn'
 
-gem 'opro', github: "opro/opro"
+gem 'opro'
 
 gem 'wicked'
 
