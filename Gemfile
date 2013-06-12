@@ -42,5 +42,5 @@ gem 'protected_attributes'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'rails_log_stdout',           github: 'heroku/rails_log_stdout'
+gem 'rails_stdout_logging'
 gem 'rails3_serve_static_assets', github: 'heroku/rails3_serve_static_assets'
